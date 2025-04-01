@@ -24,7 +24,7 @@ class JwtAuthFilter(
             if (jwtService.validateAccessToken(authHeader)) {
                 val userId = jwtService.getUserIdFromToken(authHeader)
                 // change so called global security context of spring boot
-                val auth = UsernamePasswordAuthenticationToken(userId, null)
+                val auth = UsernamePasswordAuthenticationToken(userId, null, emptyList())
                 SecurityContextHolder.getContext().authentication = auth
             }
         }
