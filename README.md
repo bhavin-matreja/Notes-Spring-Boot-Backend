@@ -37,7 +37,10 @@ This is the backend for a simple notes application, built with Spring Boot, Kotl
 
 **Screenshots:**
 ![Postman Login Example](screenshots/login_api.png)
+
 ![Postman Create Note Example](screenshots/create_note_api.png)
+
 ![Postman All Note Example](screenshots/all_notes_api.png)
+
 ![Postman Refresh Example](screenshots/refresh_api.png)
 
