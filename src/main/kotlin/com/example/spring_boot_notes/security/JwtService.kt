@@ -7,13 +7,23 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.util.*
 
+@Suppress("DEPRECATION")
 @Service
 class JwtService(
-   @Value("JWT_SECRET_BASE64") private val jwtSecret: String
+   @Value("\${jwt.secret}") private val jwtSecret: String
 ) {
 
+    // Generate a secure 256-bit key
+    final val secretKey256bit = Keys.secretKeyFor(io.jsonwebtoken.SignatureAlgorithm.HS256)
+
+    // Encode the key to base64, and store this base 64 string.
+    val secretString = Base64.getEncoder().encodeToString(secretKey256bit.encoded)
+
+    // Then in your springbootsecret variable, place the generated string.
+    private val secretKey = Keys.hmacShaKeyFor(Base64.getDecoder().decode(secretString))
+
     // sprintbootsecret
-    private val secretKey = Keys.hmacShaKeyFor(Base64.getDecoder().decode(jwtSecret))
+//    private val secretKey = Keys.hmacShaKeyFor(Base64.getDecoder().decode(jwtSecret))
 
     // access token is the real token that grants the real access to our backend. It is typically
     // a very short lived token and would mention time that it would expire. An hour or 15mins
@@ -31,7 +41,7 @@ class JwtService(
     val refreshTokenValidityMs = 30L * 24L * 60L * 60L * 1000L // 30 days
 
     private fun generateToken(
-        userId:String,
+        userId: String,
         type: String,
         expiry: Long
     ): String {
@@ -73,17 +83,17 @@ class JwtService(
     }
 
     private fun parseAllClaims(token: String): Claims? {
-        val rawToken = if (token.startsWith("Bearer")) {
+        val rawToken = if(token.startsWith("Bearer ")) {
             token.removePrefix("Bearer ")
         } else token
         return try {
             Jwts.parser() // first parse this token
                 .verifyWith(secretKey) //parse with secret key
                 .build()
-                .parseSignedClaims(token)
+                .parseSignedClaims(rawToken)
                 .payload
-        } catch (e:Exception) {
-            return null
+        } catch(e: Exception) {
+            null
         }
     }
 }
