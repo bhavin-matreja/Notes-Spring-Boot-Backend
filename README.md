@@ -29,18 +29,21 @@ This is the backend for a simple notes application, built with Spring Boot, Kotl
     * **User Authentication:**
         * `POST /auth/register`: Register a new user.
         * `POST /auth/login`: Login and get a JWT.
+        * `POST /auth/refresh`: Refresh a JWT using a refresh token.
     * **Notes:**
         * `POST /notes`: Create a new note.
-        * `GET /notes?ownerId={ownerId}`: Get notes by user ID.
-        * `PUT /notes/{id}`: Update a note.
+        * `GET /notes: Get notes by user ID.
         * `DELETE /notes/{id}`: Delete a note.
 
 **Screenshots:**
 ![Postman Login Example](screenshots/login_api.png)
 
+
 ![Postman Create Note Example](screenshots/create_note_api.png)
 
+
 ![Postman All Note Example](screenshots/all_notes_api.png)
+
 
 ![Postman Refresh Example](screenshots/refresh_api.png)
 
